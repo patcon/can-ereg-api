@@ -149,6 +149,9 @@ class VoterRegistrationSpider(scrapy.Spider):
     def parse_vote_eligibility(self, response):
         open_in_browser(response)
         text = response.css('.result > .firstchild > h2::text').extract_first().strip()
+        # Expected options:
+        #  - You are registered to vote, at the address you provided.
+        #  - Based on the information provided, we cannot confirm that you are registered to vote.
         logger.info(text)
 
     def render_url(self, response):
