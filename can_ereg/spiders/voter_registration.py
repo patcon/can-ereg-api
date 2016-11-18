@@ -6,6 +6,16 @@ import logging
 logger = logging.getLogger()
 
 
+voter = {
+        'first_name': 'Patrick',
+        'last_name': 'Connolly',
+        'birth_date': '1985-3-17',
+        'postal_code': 'M6G1L5',
+        'street_number': '719',
+        'unit_number': '117',
+        }
+
+
 class VoterRegistrationSpider(scrapy.Spider):
     name = "voter_registration"
     allowed_domains = ["ereg.elections.ca"]
@@ -72,7 +82,7 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
                 }
         yield FormRequest.from_response(
                 response,
@@ -89,7 +99,7 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
                 'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
                 }
         yield FormRequest(
@@ -105,16 +115,16 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
                 'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
-                'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': 'Patrick',
+                'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': voter['first_name'],
                 'ctl00$ContentPlaceHolder1$ucPerson$fldMiddleName$txtField': '',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': 'Connolly',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': '1985',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': '3',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': '17',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': '719',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': '117',
+                'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': voter['last_name'],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': voter['birth_date'].split('-')[0],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': voter['birth_date'].split('-')[1],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': voter['birth_date'].split('-')[2],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': voter['street_number'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': voter['unit_number'],
                 'ctl00$ContentPlaceHolder1$NavButton$BtnNext': 'Next',
                 }
         yield FormRequest(
