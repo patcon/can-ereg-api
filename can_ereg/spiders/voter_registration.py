@@ -65,6 +65,8 @@ class VoterRegistrationSpider(scrapy.Spider):
                 )
 
     def submit_postalcode(self, response):
+        # Extract address data from informal address using Google Maps API
+        # See: https://developers.google.com/maps/documentation/geocoding/intro
         formdata = {
                 '__EVENTTARGET': '',
                 '__EVENTARGUMENT': '',
