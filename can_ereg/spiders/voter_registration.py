@@ -2,6 +2,8 @@
 import scrapy
 from scrapy.http import FormRequest
 from scrapy.utils.response import open_in_browser
+import logging
+logger = logging.getLogger()
 
 
 class VoterRegistrationSpider(scrapy.Spider):
@@ -67,27 +69,31 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTTARGET': '',
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
-                '__SCROLLPOSITIONX': '0',
-                '__SCROLLPOSITIONY': '0',
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': 'Patrick',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldMiddleName$txtField': '',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': 'Connolly',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': '1985',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': '3',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': '17',
                 'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': '92774',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': '719',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldSuffix$ddField': '',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': '117',
                 }
         yield FormRequest.from_response(
                 response,
                 formdata=formdata,
                 formcss='#form1',
                 clickdata={'name':'ctl00$ContentPlaceHolder1$ucAddress$BtnPostalCode'},
-                callback=self.render_url,
+                callback=self.update_street,
+                )
+
+    def update_street(self, response):
+        option_values = response.css('#ContentPlaceHolder1_ucAddress_fldStreet_ddField option::attr(value)').extract()
+        formdata = {
+                '__EVENTTARGET': 'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField',
+                '__EVENTARGUMENT': '',
+                '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
+                '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
+                'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
+                }
+        yield FormRequest(
+                response.url,
+                formdata=formdata,
+                callback=self.submit_voter_info,
                 )
 
     def submit_voter_info(self, response):
@@ -95,30 +101,29 @@ class VoterRegistrationSpider(scrapy.Spider):
         formdata = {
                 '__EVENTTARGET': '',
                 '__EVENTARGUMENT': '',
-                '__LASTFOCUS': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
-                '__SCROLLPOSITIONX': '0',
-                '__SCROLLPOSITIONY': '0',
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
+                'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
                 'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': 'Patrick',
                 'ctl00$ContentPlaceHolder1$ucPerson$fldMiddleName$txtField': '',
                 'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': 'Connolly',
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': '1985',
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': '3',
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': '17',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': 'M6G1L5',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
                 'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': '719',
-                'ctl00$ContentPlaceHolder1$ucAddress$fldSuffix$ddField': '',
                 'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': '117',
+                'ctl00$ContentPlaceHolder1$NavButton$BtnNext': 'Next',
                 }
-        yield FormRequest.from_response(
-                response,
+        yield FormRequest(
+                response.url,
                 formdata=formdata,
-                formcss='#form1',
-                clickdata={'name':'ctl00$ContentPlaceHolder1$NavButton$BtnNext'},
                 callback=self.render_url,
                 )
 
     def render_url(self, response):
+        # Can fetch this a few time and get different randomly-generated captchas to help make a better guess.
+        # See: https://ereg.elections.ca/Telerik.Web.UI.WebResource.axd?type=rca&isc=true&guid=2d918a7f-09cb-4e0e-92e2-125d4ddb156a
+        captcha_rel_link = response.css('#ctl00_ContentPlaceHolder1_RadCaptcha1_CaptchaImage::attr(src)').extract_first()
+        logger.info('CAPTCHA URL: https://ereg.elections.ca/' + captcha_rel_link)
         open_in_browser(response)
