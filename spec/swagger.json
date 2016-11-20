@@ -52,7 +52,8 @@
                     {
                         "name": "birth_date",
                         "description": "Date of birth",
-                        "type": "date",
+                        "type": "string",
+                        "format": "date",
                         "required": true,
                         "in": "formData"
                     },
