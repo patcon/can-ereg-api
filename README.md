@@ -6,6 +6,11 @@ simpler to check Canadian Voter Registration.
 For now, it is just a scraper that checks my own registration via the
 official Elections Canada voter registration tool.
 
+We have generated [aspirational API
+documentation](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/patcon/can-ereg-api/master/spec/swagger.json)
+presented via a fancy browser UI using the [Open API
+standard](https://www.openapis.org/).
+
 ## Anticipated Features
 
 * **Checks multiple addresses.** This will be helpful when you just want to

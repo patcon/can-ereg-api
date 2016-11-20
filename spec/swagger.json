@@ -1,0 +1,189 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Canadian Voter Registration API",
+        "description": "Check Canadian voter registrations via API",
+        "version": "1.0.0"
+    },
+    "host": "ereg.t0ronto.ca",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api/v1",
+    "produces": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "Tasks",
+            "description": "Monitor queued Tasks"
+        },
+        {
+            "name": "Checks",
+            "description": "Create voter registration Checks"
+        }
+    ],
+    "paths": {
+        "/checks": {
+            "post": {
+                "summary": "Voter Registration Checks",
+                "description": "The Voter Registration Check endpoint queues up a task,\nand directs the user to that task object.\n",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "description": "First name of voter",
+                        "required": true,
+                        "type": "string",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "middle_name",
+                        "description": "Middle name of voter",
+                        "type": "string",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "last_name",
+                        "description": "Last name of voter",
+                        "required": true,
+                        "type": "string",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "birth_date",
+                        "description": "Date of birth",
+                        "type": "date",
+                        "required": true,
+                        "in": "formData"
+                    },
+                    {
+                        "name": "postal_code",
+                        "description": "Home address postal code",
+                        "type": "string",
+                        "required": true,
+                        "in": "formData"
+                    },
+                    {
+                        "name": "unit_number",
+                        "description": "Home address unit number",
+                        "required": true,
+                        "type": "integer",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "unit_suffix",
+                        "description": "Home address unit suffix",
+                        "type": "string",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "street_name",
+                        "description": "Home address street name",
+                        "type": "string",
+                        "in": "formData"
+                    },
+                    {
+                        "name": "street_number",
+                        "description": "Home address street number",
+                        "type": "integer",
+                        "required": true,
+                        "in": "formData"
+                    }
+                ],
+                "tags": [
+                    "Checks"
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Voter registration check initiated",
+                        "headers": {
+                            "Location": {
+                                "description": "URL of new task resource running check.",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Check"
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "summary": "Queued Tasks",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "taskId",
+                        "description": "ID of queued task",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "test",
+                        "schema": {
+                            "$ref": "#/definitions/Task"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Check": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "description": "First name of voter."
+                },
+                "middle_name": {
+                    "type": "string",
+                    "description": "Middle name of voter."
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "Last name of voter."
+                }
+            }
+        },
+        "Task": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": ""
+                },
+                "resolution": {
+                    "type": "string",
+                    "description": ""
+                },
+                "resource": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
