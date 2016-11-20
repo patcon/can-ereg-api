@@ -50,3 +50,20 @@ indicating when a Facebook account's address and name match a registered
 voter. Now the councillors can have higher confidence that the data is
 truly representative, and the citizen's views expressed via the platform
 can be more fully respected.
+
+## Usage
+
+The default scrape process will require manually solving the captcha,
+which will open in its own window, pausing the scrape until you submit a
+solution.
+
+    mkvirtualenv can-ereg-api --python=`which python3`
+    pip install -r requirements.txt
+    workon can-ereg-api
+    scrapy crawl voter_registration
+
+We also support using [Anti-Captcha](https://anti-captcha.com), a
+captcha-solving service that features API support. You may use this by
+setting the proper environment variable before running the scraper:
+
+    export ANTICAPTCHA_API_KEY=<my-api-key>

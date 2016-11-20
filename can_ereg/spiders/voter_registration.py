@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import logging
 import scrapy
 import urllib
@@ -138,7 +139,10 @@ class VoterRegistrationSpider(scrapy.Spider):
                 )
 
     def solve_captcha(self, response):
-        solver = CaptchaSolver('browser')
+        if os.environ.get('ANTICAPTCHA_API_KEY'):
+            solver = CaptchaSolver('antigate', api_key=os.environ['ANTICAPTCHA_API_KEY'])
+        else:
+            solver = CaptchaSolver('browser')
 
         # Can fetch this a few time and get different randomly-generated captchas to help make a better guess.
         # See: https://ereg.elections.ca/Telerik.Web.UI.WebResource.axd?type=rca&isc=true&guid=2d918a7f-09cb-4e0e-92e2-125d4ddb156a
