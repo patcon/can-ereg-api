@@ -15,18 +15,14 @@
     ],
     "tags": [
         {
-            "name": "Tasks",
-            "description": "Monitor queued Tasks"
-        },
-        {
             "name": "Checks",
-            "description": "Create voter registration Checks"
+            "description": "Perform voter registration Checks"
         }
     ],
     "paths": {
         "/checks": {
             "post": {
-                "summary": "Voter Registration Checks",
+                "summary": "Initiate a new voter registration check",
                 "description": "The Voter Registration Check endpoint queues up a task,\nand directs the user to that task object.\n",
                 "parameters": [
                     {
@@ -106,31 +102,37 @@
                         "schema": {
                             "$ref": "#/definitions/Check"
                         }
+                    },
+                    "default": {
+                        "description": "Generic Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 }
             }
         },
-        "/tasks/{taskId}": {
+        "/checks/{checkId}": {
             "get": {
-                "summary": "Queued Tasks",
+                "summary": "Find voter registration check by ID",
                 "description": "",
                 "parameters": [
                     {
-                        "name": "taskId",
+                        "name": "checkId",
                         "type": "integer",
-                        "description": "ID of queued task",
+                        "description": "ID of voter registration check",
                         "in": "path",
                         "required": true
                     }
                 ],
                 "tags": [
-                    "Tasks"
+                    "Checks"
                 ],
                 "responses": {
                     "200": {
                         "description": "test",
                         "schema": {
-                            "$ref": "#/definitions/Task"
+                            "$ref": "#/definitions/Check"
                         }
                     }
                 }
@@ -139,23 +141,6 @@
     },
     "definitions": {
         "Check": {
-            "type": "object",
-            "properties": {
-                "first_name": {
-                    "type": "string",
-                    "description": "First name of voter."
-                },
-                "middle_name": {
-                    "type": "string",
-                    "description": "Middle name of voter."
-                },
-                "last_name": {
-                    "type": "string",
-                    "description": "Last name of voter."
-                }
-            }
-        },
-        "Task": {
             "type": "object",
             "properties": {
                 "status": {
