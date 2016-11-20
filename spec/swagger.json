@@ -63,7 +63,6 @@
                     {
                         "name": "unit_number",
                         "description": "Home address unit number",
-                        "required": true,
                         "type": "integer",
                         "in": "formData"
                     },
@@ -95,7 +94,7 @@
                         "description": "Voter registration check initiated",
                         "headers": {
                             "Location": {
-                                "description": "URL of new task resource running check.",
+                                "description": "URL of newly created Check resource.",
                                 "type": "string"
                             }
                         },
