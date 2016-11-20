@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import logging
 import scrapy
+import urllib
+
+from captcha_solver import CaptchaSolver
 from scrapy.http import FormRequest
 from scrapy.utils.response import open_in_browser
-import logging
-logger = logging.getLogger()
 
+
+logger = logging.getLogger()
 
 voter = {
         'first_name': 'Patrick',
@@ -134,13 +138,16 @@ class VoterRegistrationSpider(scrapy.Spider):
                 )
 
     def solve_captcha(self, response):
+        solver = CaptchaSolver('browser')
+
         # Can fetch this a few time and get different randomly-generated captchas to help make a better guess.
         # See: https://ereg.elections.ca/Telerik.Web.UI.WebResource.axd?type=rca&isc=true&guid=2d918a7f-09cb-4e0e-92e2-125d4ddb156a
-        #captcha_rel_link = response.css('#ctl00_ContentPlaceHolder1_RadCaptcha1_CaptchaImage::attr(src)').extract_first()
-        open_in_browser(response)
+        captcha_path = response.css('#ctl00_ContentPlaceHolder1_RadCaptcha1_CaptchaImage::attr(src)').extract_first()
+        captcha_url = 'https://ereg.elections.ca/{}'.format(captcha_path)
+        jpg_data = urllib.request.urlopen(captcha_url).read()
 
         self.crawler.engine.pause()
-        captcha = input("Captcha: ")
+        captcha = solver.solve_captcha(jpg_data)
         self.crawler.engine.unpause()
 
         formdata = {

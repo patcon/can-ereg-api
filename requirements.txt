@@ -1,1 +1,2 @@
 Scrapy
+captcha_solver
