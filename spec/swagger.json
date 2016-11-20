@@ -116,6 +116,7 @@
                 "parameters": [
                     {
                         "name": "taskId",
+                        "type": "integer",
                         "description": "ID of queued task",
                         "in": "path",
                         "required": true
