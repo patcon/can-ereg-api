@@ -109,7 +109,7 @@
                 }
             }
         },
-        "/tasks": {
+        "/tasks/{taskId}": {
             "get": {
                 "summary": "Queued Tasks",
                 "description": "",
