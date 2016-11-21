@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import logging
 import scrapy
 import urllib
 
@@ -9,9 +8,14 @@ from scrapy.http import FormRequest
 from scrapy.utils.response import open_in_browser
 
 
-logger = logging.getLogger()
 
-voter = {
+
+class VoterRegistrationSpider(scrapy.Spider):
+    name = "voter_registration"
+    allowed_domains = ["ereg.elections.ca"]
+    start_urls = ['https://ereg.elections.ca/CWelcome.aspx']
+    voter_data = {}
+    default_voter_data = {
         'first_name': 'Patrick',
         'last_name': 'Connolly',
         'birth_date': '1985-3-17',
@@ -21,12 +25,11 @@ voter = {
         }
 
 
-class VoterRegistrationSpider(scrapy.Spider):
-    name = "voter_registration"
-    allowed_domains = ["ereg.elections.ca"]
-    start_urls = ['https://ereg.elections.ca/CWelcome.aspx']
-
     def parse(self, response):
+        if hasattr(self, 'payload'):
+            self.voter_data = payload['voter_data']
+        else:
+            self.voter_data = self.default_voter_data
         yield from self.submit_start(response)
 
     def submit_start(self, response):
@@ -87,7 +90,7 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': self.voter_data['postal_code'],
                 }
         yield FormRequest.from_response(
                 response,
@@ -104,7 +107,7 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': self.voter_data['postal_code'],
                 'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
                 }
         yield FormRequest(
@@ -120,16 +123,16 @@ class VoterRegistrationSpider(scrapy.Spider):
                 '__EVENTARGUMENT': '',
                 '__VIEWSTATE': response.css('#__VIEWSTATE::attr(value)').extract_first(),
                 '__EVENTVALIDATION': response.css('#__EVENTVALIDATION::attr(value)').extract_first(),
-                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': voter['postal_code'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldPostalCode$txtField': self.voter_data['postal_code'],
                 'ctl00$ContentPlaceHolder1$ucAddress$fldStreet$ddField': option_values[1],
-                'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': voter['first_name'],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldFirstName$txtField': self.voter_data['first_name'],
                 'ctl00$ContentPlaceHolder1$ucPerson$fldMiddleName$txtField': '',
-                'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': voter['last_name'],
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': voter['birth_date'].split('-')[0],
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': voter['birth_date'].split('-')[1],
-                'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': voter['birth_date'].split('-')[2],
-                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': voter['street_number'],
-                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': voter['unit_number'],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldLastName$txtField': self.voter_data['last_name'],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': self.voter_data['birth_date'].split('-')[0],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': self.voter_data['birth_date'].split('-')[1],
+                'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': self.voter_data['birth_date'].split('-')[2],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': self.voter_data['street_number'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': self.voter_data['unit_number'],
                 'ctl00$ContentPlaceHolder1$NavButton$BtnNext': 'Next',
                 }
         yield FormRequest(
@@ -170,12 +173,12 @@ class VoterRegistrationSpider(scrapy.Spider):
                 )
 
     def parse_vote_eligibility(self, response):
-        open_in_browser(response)
         text = response.css('.result > .firstchild > h2::text').extract_first().strip()
         # Expected options:
         #  - You are registered to vote, at the address you provided.
         #  - Based on the information provided, we cannot confirm that you are registered to vote.
-        logger.info(text)
+        is_registered = True if ('You are registered to vote' in text) else False
+        return {'message': text, 'registered': is_registered}
 
     def render_url(self, response):
         open_in_browser(response)

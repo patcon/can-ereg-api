@@ -51,8 +51,11 @@ voter. Now the councillors can have higher confidence that the data is
 truly representative, and the citizen's views expressed via the platform
 can be more fully respected.
 
-## Usage
+## Requirements
 
+* Install [Redis](http://redis.io/topics/quickstart)
+
+## Usage
 
     mkvirtualenv can-ereg-api --python=`which python3`
     pip install -r requirements.txt
@@ -88,5 +91,7 @@ In another terminal, open an interactive `python` console and run:
 
 ```py
 from tasks import check_registration
-check_registration.delay()
+task = check_registration.delay()
+task.status
+task.result
 ```

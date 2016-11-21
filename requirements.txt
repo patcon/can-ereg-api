@@ -1,4 +1,6 @@
-Scrapy
 captcha_solver
-celery
+celery<4
 redis
+scrapy
+scrapyscript
+billiard==3.3.0.23
