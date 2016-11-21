@@ -1,12 +1,9 @@
 # Canadian Voter Registration API
 
 An API aspiring to offer a programmatic layer on top of the official
-Election's Canada [Voter Registration
-tool](https://ereg.elections.ca/CWelcome.aspx).
+Election's Canada [Voter Registration tool](https://ereg.elections.ca/).
 
-As of today, it only:
-
-    webcrawls through registration check via Celery task queue
+As of today, it only: `webcrawls through registration check via Celery task queue.`
 
 We have generated [aspirational API
 documentation](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/patcon/can-ereg-api/master/spec/swagger.json)
@@ -15,14 +12,16 @@ standard](https://www.openapis.org/).
 
 ## Anticipated Features
 
+* **Confirms voter registration info.** This is the bare minimum to make
+  this interesting.
+* **Updates voter registration info.** This is arguably a bad idea, but might
+  be interesting. This would require submitting driver's license number.
 * **Checks multiple addresses.** This will be helpful when you just want to
   submit your address history and find out where you're registered.
 * **Allows access via API key.** We bypass Election Canada's captcha, so we'll
-  need to restrict access to the API.
+  need to restrict access to the API, contingent on developer account creation.
 * **Accepts partial addresses.** We'll use the Google Maps geocoder to
   resolve them to full addresses for our lookup.
-* **Registers/updates voter information.** This is arguably a bad idea,
-  but might be interesting.
 
 ## Architecture
 
