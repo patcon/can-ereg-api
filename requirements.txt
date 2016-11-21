@@ -1,2 +1,4 @@
 Scrapy
 captcha_solver
+celery
+redis

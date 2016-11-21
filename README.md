@@ -53,17 +53,40 @@ can be more fully respected.
 
 ## Usage
 
-The default scrape process will require manually solving the captcha,
-which will open in its own window, pausing the scrape until you submit a
-solution.
 
     mkvirtualenv can-ereg-api --python=`which python3`
     pip install -r requirements.txt
     workon can-ereg-api
-    scrapy crawl voter_registration
 
-We also support using [Anti-Captcha](https://anti-captcha.com), a
-captcha-solving service that features API support. You may use this by
-setting the proper environment variable before running the scraper:
+The automated voter registration check involves solving a captcha. This
+can be done either (1) **manually** (default) or (2) **automatically**.
+The former involves manually solving the captcha mid-scrape, by openning
+it in its own window. The scraper waits until you submit a solution,
+then continues. The latter automates this step by using
+**[Anti-Captcha](https://anti-captcha.com)**, a captcha-solving service
+that features API support. You can enable this by setting the
+proper environment variable before running the scraper:
 
     export ANTICAPTCHA_API_KEY=<my-api-key>
+
+For now scraper can be run directly, or via queued celery task:
+
+### Direct Scrape
+
+    scrapy crawl voter_registration
+
+### Queued Task
+
+Since there can be no human interaction in a queued task, we must use
+the Anti-Captcha service.
+
+In one terminal, run the celery process:
+
+    celery worker --app=tasks --loglevel=info
+
+In another terminal, open an interactive `python` console and run:
+
+```py
+from tasks import check_registration
+check_registration.delay()
+```
