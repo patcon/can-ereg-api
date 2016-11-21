@@ -1,10 +1,12 @@
 # Canadian Voter Registration API
 
-This is an attempt at writing an API that will hopefully make it
-simpler to check Canadian Voter Registration.
+An API aspiring to offer a programmatic layer on top of the official
+Election's Canada [Voter Registration
+tool](https://ereg.elections.ca/CWelcome.aspx).
 
-For now, it is just a scraper that checks my own registration via the
-official Elections Canada voter registration tool.
+As of today, it only:
+
+    webcrawls through registration check via Celery task queue
 
 We have generated [aspirational API
 documentation](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/patcon/can-ereg-api/master/spec/swagger.json)
