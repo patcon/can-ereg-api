@@ -26,8 +26,8 @@ class VoterRegistrationSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        if hasattr(self, 'payload'):
-            self.voter_data = payload['voter_data']
+        if hasattr(self, 'payload') and 'voter_data' in self.payload:
+            self.voter_data = self.payload['voter_data']
         else:
             self.voter_data = self.default_voter_data
         yield from self.submit_start(response)
