@@ -14,7 +14,6 @@ class VoterRegistrationSpider(scrapy.Spider):
     name = "voter_registration"
     allowed_domains = ["ereg.elections.ca"]
     start_urls = ['https://ereg.elections.ca/CWelcome.aspx']
-    voter_data = {}
     default_voter_data = {
         'first_name': 'Patrick',
         'last_name': 'Connolly',
@@ -26,8 +25,8 @@ class VoterRegistrationSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        if hasattr(self, 'payload') and 'voter_data' in self.payload:
-            self.voter_data = self.payload['voter_data']
+        if hasattr(self, 'payload') and self.payload:
+            self.voter_data = self.payload
         else:
             self.voter_data = self.default_voter_data
         yield from self.submit_start(response)

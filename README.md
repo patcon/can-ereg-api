@@ -88,11 +88,6 @@ In one terminal, run the celery process:
 
     celery worker --app=tasks --loglevel=info
 
-In another terminal, open an interactive `python` console and run:
+In another terminal, run:
 
-```py
-from tasks import check_registration
-task = check_registration.delay()
-task.status
-task.result
-```
+    python example.py
