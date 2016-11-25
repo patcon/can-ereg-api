@@ -24,4 +24,5 @@ application = app.app
 
 if __name__ == '__main__':
     # run our standalone gevent server
-    app.run(port=5000, server='gevent')
+    port = environ.get('PORT', 5000)
+    app.run(port=port, server='gevent')

@@ -8,7 +8,7 @@ from scrapyscript import Job, Processor
 from can_ereg.spiders.voter_registration import VoterRegistrationSpider
 
 
-redis_url = environ['REDIS_URL']
+redis_url = environ.get('REDIS_URL', 'redis://localhost:6379')
 app = Celery('tasks', backend='{}/1'.format(redis_url), broker='{}/0'.format(redis_url))
 
 @app.task
