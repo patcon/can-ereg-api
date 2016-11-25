@@ -11,10 +11,24 @@ def create_check(**data):
     data.update({'unit_number': ''})
     task = check_registration.delay(data)
 
-    return {'status': task.status}, 202
+    response = {
+            'status': task.status,
+            'id': task.id,
+            }
 
-def get_check():
-    return NoContent, 200
+    return response, 202
+
+def get_check(check_id):
+    task = check_registration.AsyncResult(check_id)
+
+    result = task.result[0] if task.ready() else None
+
+    response = {
+            'status': task.status,
+            'result': result,
+            }
+
+    return response, 200
 
 logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__, specification_dir='spec/')

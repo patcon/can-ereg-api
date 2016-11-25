@@ -84,17 +84,18 @@ paths:
           description: Generic Error
           schema:
             $ref: '#/definitions/Error'
-  '/checks/{checkId}':
+  '/checks/{check_id}':
     get:
       operationId: app.get_check
       summary: Find voter registration check by ID
       description: ''
       parameters:
-        - name: checkId
-          type: integer
+        - name: check_id
           description: ID of voter registration check
           in: path
           required: true
+          type: string
+          pattern: "^[a-z0-9-]+$"
       tags:
         - Checks
       responses:
