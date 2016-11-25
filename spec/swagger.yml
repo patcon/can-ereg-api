@@ -20,6 +20,8 @@ paths:
   /checks:
     post:
       operationId: app.create_check
+      consumes:
+        - application/x-www-form-urlencoded
       summary: Initiate a new voter registration check
       description: |
         The Voter Registration Check endpoint queues up a task,
