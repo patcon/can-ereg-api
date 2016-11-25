@@ -1,6 +1,7 @@
 captcha_solver
 celery<4
 connexion
+gevent
 redis
 scrapy
 scrapyscript
