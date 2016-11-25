@@ -100,10 +100,10 @@ paths:
       tags:
         - Checks
       responses:
+        '422':
+          description: Sub-resource could not be found
         '200':
-          description: test
-          schema:
-            $ref: '#/definitions/Check'
+          description: Sub-resource found
 definitions:
   Check:
     type: object

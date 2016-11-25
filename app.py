@@ -5,6 +5,7 @@ from connexion import NoContent
 from flask import redirect
 from os import environ
 from tasks import check_registration
+from tasks import DEFAULT_STATE
 
 
 def create_check(**data):
@@ -12,15 +13,13 @@ def create_check(**data):
     data.update({'unit_number': ''})
     task = check_registration.delay(data)
 
-    response = {
-            'status': task.status,
-            'id': task.id,
-            }
-
-    return response, 202
+    return NoContent, 202, {'Location': 'https://can-ereg-api.herokuapp.com/v1/checks/{}'.format(task.id)}
 
 def get_check(check_id):
     task = check_registration.AsyncResult(check_id)
+
+    if task.status == DEFAULT_STATE:
+        return NoContent, 422
 
     result = task.result[0] if task.ready() else None
 
