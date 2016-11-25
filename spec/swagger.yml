@@ -42,10 +42,11 @@ paths:
           type: string
           in: formData
         - name: birth_date
-          description: Date of birth
+          description: "Date of birth, eg. 1985-1-4"
           type: string
           format: date
           required: true
+          pattern: "^[0-9]{4}-1?[0-9]-[1-3]?[0-9]$"
           in: formData
         - name: postal_code
           description: Home address postal code
