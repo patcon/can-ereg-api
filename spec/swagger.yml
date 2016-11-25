@@ -1,0 +1,123 @@
+swagger: '2.0'
+info:
+  title: Canadian Voter Registration API
+  description: >-
+    This is a speculative API server for checking Canadian voter registrations
+    via [Election Canada's online
+    tool](https://ereg.elections.ca/CWelcome.aspx). This exists solely for
+    documentation, and is not yet implemented.
+  version: 1.0.0
+host: ereg.t0ronto.ca
+schemes:
+  - https
+basePath: /api/v1
+produces:
+  - application/json
+tags:
+  - name: Checks
+    description: Perform voter registration Checks
+paths:
+  /checks:
+    post:
+      summary: Initiate a new voter registration check
+      description: |
+        The Voter Registration Check endpoint queues up a task,
+        and directs the user to that task object.
+      parameters:
+        - name: first_name
+          description: First name of voter
+          required: true
+          type: string
+          in: formData
+        - name: middle_name
+          description: Middle name of voter
+          type: string
+          in: formData
+        - name: last_name
+          description: Last name of voter
+          required: true
+          type: string
+          in: formData
+        - name: birth_date
+          description: Date of birth
+          type: string
+          format: date
+          required: true
+          in: formData
+        - name: postal_code
+          description: Home address postal code
+          type: string
+          required: true
+          in: formData
+        - name: unit_number
+          description: Home address unit number
+          type: integer
+          in: formData
+        - name: unit_suffix
+          description: Home address unit suffix
+          type: string
+          in: formData
+        - name: street_name
+          description: Home address street name
+          type: string
+          in: formData
+        - name: street_number
+          description: Home address street number
+          type: integer
+          required: true
+          in: formData
+      tags:
+        - Checks
+      responses:
+        '202':
+          description: Voter registration check initiated
+          headers:
+            Location:
+              description: URL of newly created Check resource.
+              type: string
+          schema:
+            $ref: '#/definitions/Check'
+        default:
+          description: Generic Error
+          schema:
+            $ref: '#/definitions/Error'
+  '/checks/{checkId}':
+    get:
+      summary: Find voter registration check by ID
+      description: ''
+      parameters:
+        - name: checkId
+          type: integer
+          description: ID of voter registration check
+          in: path
+          required: true
+      tags:
+        - Checks
+      responses:
+        '200':
+          description: test
+          schema:
+            $ref: '#/definitions/Check'
+definitions:
+  Check:
+    type: object
+    properties:
+      status:
+        type: string
+        description: ''
+      resolution:
+        type: string
+        description: ''
+      resource:
+        type: string
+        description: ''
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
