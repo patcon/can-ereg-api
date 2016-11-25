@@ -10,7 +10,7 @@ info:
 host: ereg.t0ronto.ca
 schemes:
   - https
-basePath: /api/v1
+basePath: /v1
 produces:
   - application/json
 tags:
@@ -19,6 +19,7 @@ tags:
 paths:
   /checks:
     post:
+      operationId: app.create_check
       summary: Initiate a new voter registration check
       description: |
         The Voter Registration Check endpoint queues up a task,
@@ -83,6 +84,7 @@ paths:
             $ref: '#/definitions/Error'
   '/checks/{checkId}':
     get:
+      operationId: app.get_check
       summary: Find voter registration check by ID
       description: ''
       parameters:

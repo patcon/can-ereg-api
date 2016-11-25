@@ -130,8 +130,8 @@ class VoterRegistrationSpider(scrapy.Spider):
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateYear$ddField': self.voter_data['birth_date'].split('-')[0],
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateMonth$ddField': self.voter_data['birth_date'].split('-')[1],
                 'ctl00$ContentPlaceHolder1$ucPerson$fldDateDay$ddField': self.voter_data['birth_date'].split('-')[2],
-                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': self.voter_data['street_number'],
-                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': self.voter_data['unit_number'],
+                'ctl00$ContentPlaceHolder1$ucAddress$fldCivic$txtField': str(self.voter_data['street_number']),
+                'ctl00$ContentPlaceHolder1$ucAddress$fldUnit$txtField': str(self.voter_data['unit_number']),
                 'ctl00$ContentPlaceHolder1$NavButton$BtnNext': 'Next',
                 }
         yield FormRequest(

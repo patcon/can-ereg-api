@@ -96,7 +96,8 @@ proper environment variable before running the scraper:
 
     export ANTICAPTCHA_API_KEY=<my-api-key>
 
-For now scraper can be run directly, or via queued celery task:
+For now scraper can be run directly, via queued celery task, or in full
+as an API:
 
 ### Direct Scrape
 
@@ -114,3 +115,14 @@ In one terminal, run the celery process:
 In another terminal, run:
 
     python example.py
+
+### API
+
+This is most easily run via Heroku CLI, after setting an envvar:
+
+    echo ANTICAPTCHA_API_KEY=<my-api-key> > .env
+    huroku local
+
+You can then test the API by via it at:
+
+    http://localhost:5000/v1/ui
