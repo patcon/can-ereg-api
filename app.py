@@ -24,6 +24,4 @@ app.add_api('swagger.yml')
 application = app.app
 
 if __name__ == '__main__':
-    # run our standalone gevent server
-    port = environ.get('PORT', 5000)
-    app.run(port=port, server='gevent')
+    app.run()
