@@ -54,7 +54,7 @@ voter. Now the councillors can have higher confidence that the data is
 truly representative, and the citizen's views expressed via the platform
 can be more fully respected.
 
-#### Unofficial National Identity System
+#### Unofficial National Digital Identity System
 
 Bob wishes the Government of Canada offered a digital identity system,
 but an official one is years away. But he's impatient, and wants to
