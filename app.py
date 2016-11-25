@@ -11,7 +11,7 @@ def create_check(**data):
     data.update({'unit_number': ''})
     task = check_registration.delay(data)
 
-    return {'status': task.status}
+    return {'status': task.status}, 202
 
 def get_check():
     return NoContent, 200
