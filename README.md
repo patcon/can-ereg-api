@@ -38,12 +38,14 @@ learn the result.
 
 #### Alternative Voting System
 
-Alice is building a polling platform to help city councillors understand
-how citizens in their districts feel about certain issues. A councillor
-needs to have faith that that the information truthfully reflects the
-views of citizens they represent. Alice's platform has Facebook
-integration, but Alice has been told that councillors (rightfully) don't
-trust Facebook names and addresses to be correct.
+Alice is building a [liquid
+democratic](https://medium.com/@DomSchiener/liquid-democracy-true-democracy-for-the-21st-century-7c66f5e53b6f)
+voting platform to help city councillors understand how citizens in
+their districts feel about certain issues. A councillor needs to have
+faith that that the information truthfully reflects the views of
+citizens they represent. Alice's platform has Facebook integration, but
+Alice has been told that councillors (rightfully) don't trust Facebook
+names and addresses to be correct.
 
 Thanksfully, Alice can use this **Voter Registration API** to improve
 the situation. She can now add a layer of verification on accounts,
@@ -57,7 +59,7 @@ can be more fully respected.
 Bob wishes the Government of Canada offered a digital identity system,
 but an official one is years away. But he's impatient, and wants to
 start experimenting (as [Estonia has
-done](https://e-estonia.com/e-residents/about/) sooner rather than
+done](https://e-estonia.com/e-residents/about/)) sooner rather than
 later. He decides to bootstrap his own identity system, on which he can
 experiment with offering cryptographic identities and authorize
 third-party applications via OAuth, while ensuring each identity is
