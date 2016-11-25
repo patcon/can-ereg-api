@@ -7,7 +7,7 @@ info:
     tool](https://ereg.elections.ca/CWelcome.aspx). This exists solely for
     documentation, and is not yet implemented.
   version: 1.0.0
-host: ereg.t0ronto.ca
+host: can-ereg-api.herokuapp.com
 schemes:
   - https
 basePath: /v1
