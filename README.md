@@ -3,38 +3,36 @@
 An API aspiring to offer a programmatic layer on top of the official
 Election's Canada [Voter Registration tool](https://ereg.elections.ca/).
 
-As of today, it only: `webcrawls through registration check via Celery task queue.`
-
-We have generated [aspirational API
-documentation](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/patcon/can-ereg-api/master/spec/swagger.json)
-presented via a fancy browser UI using the [Open API
-standard](https://www.openapis.org/).
+Working API available at
+[can-ereg-api.herokuapp.com](https://can-ereg-api.herokuapp.com/).
 
 ## Anticipated Features
 
-* **Confirms voter registration info.** This is the bare minimum to make
+* [x] **Confirms voter registration info.** This is the bare minimum to make
   this interesting.
-* **Updates voter registration info.** This is arguably a bad idea, but might
+* [ ] **Updates voter registration info.** This is arguably a bad idea, but might
   be interesting. This would require submitting driver's license number.
-* **Checks multiple addresses.** This will be helpful when you just want to
+* [ ] **Checks multiple addresses.** This will be helpful when you just want to
   submit your address history and find out where you're registered.
-* **Allows access via API key.** We bypass Election Canada's captcha, so we'll
+* [ ] **Allows access via API key.** We bypass Election Canada's captcha, so we'll
   need to restrict access to the API, contingent on developer account creation.
-* **Accepts partial addresses.** We'll use the Google Maps geocoder to
+* [ ] **Accepts partial addresses.** We'll use the Google Maps geocoder to
   resolve them to full addresses for our lookup.
 
 ## Architecture
 
 Since the form submission of the Elections Canada tool is a long-running
-operation, we will likely need to build this API around a task queue.
-Taking this approach, we with `POST` to a `registration_check` endpoint,
-so queue a new check, and return an indication of where the client will
-need to follow-up in order to learn the results.
+operation, we built this API around a Celery task queue. We made it as
+RESTful as possible, given this constraint. Taking this approach, we
+with `POST` to a `/checks` endpoint to queue a new check, and return a
+resource identifier where the client will need to follow-up in order to
+learn the result.
 
 **Resources:**
 
 * [RESTy Long-Ops](http://billhiggins.us/blog/2011/04/27/resty-long-ops/)
 * [REST and Long-Running Jobs](http://farazdagi.com/blog/2014/rest-long-running-jobs/)
+* [Open API standard](https://www.openapis.org/)
 
 ## Use-Cases
 
@@ -78,6 +76,7 @@ activate the account.
 ## Requirements
 
 * Install [Redis](http://redis.io/topics/quickstart)
+* Install [Heroku Command Line](https://devcenter.heroku.com/articles/heroku-command-line)
 
 ## Usage
 
@@ -118,11 +117,13 @@ In another terminal, run:
 
 ### API
 
-This is most easily run via Heroku CLI, after setting an envvar:
+This is most easily run using Heroku CLI:
 
+    # Set an environment variable that Heroku CLI will load
     echo ANTICAPTCHA_API_KEY=<my-api-key> > .env
+    # Run the two processes from the Procfile
     huroku local
 
-You can then test the API by via it at:
+You can then explore the local API via:
 
-    http://localhost:5000/v1/ui
+    http://localhost:5000/
