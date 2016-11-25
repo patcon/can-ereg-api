@@ -2,6 +2,7 @@ import connexion
 import logging
 
 from connexion import NoContent
+from os import environ
 from tasks import check_registration
 
 
