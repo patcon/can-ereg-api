@@ -36,7 +36,9 @@ need to follow-up in order to learn the results.
 * [RESTy Long-Ops](http://billhiggins.us/blog/2011/04/27/resty-long-ops/)
 * [REST and Long-Running Jobs](http://farazdagi.com/blog/2014/rest-long-running-jobs/)
 
-## Use-Case
+## Use-Cases
+
+#### Alternative Voting System
 
 Alice is building a polling platform to help city councillors understand
 how citizens in their districts feel about certain issues. A councillor
@@ -45,12 +47,33 @@ views of citizens they represent. Alice's platform has Facebook
 integration, but Alice has been told that councillors (rightfully) don't
 trust Facebook names and addresses to be correct.
 
-Thanksfully, Alice can use this voter registration API to improve the
-situation. She can now add a layer of verification on accounts,
+Thanksfully, Alice can use this **Voter Registration API** to improve
+the situation. She can now add a layer of verification on accounts,
 indicating when a Facebook account's address and name match a registered
 voter. Now the councillors can have higher confidence that the data is
 truly representative, and the citizen's views expressed via the platform
 can be more fully respected.
+
+#### Unofficial National Identity System
+
+Bob wishes the Government of Canada offered a digital identity system,
+but an official one is years away. But he's impatient, and wants to
+start experimenting (as [Estonia has
+done](https://e-estonia.com/e-residents/about/) sooner rather than
+later. He decides to bootstrap his own identity system, on which he can
+experiment with offering cryptographic identities and authorize
+third-party applications via OAuth, while ensuring each identity is
+paired to a genuine citizen with reasonably high assurances.
+
+Bob designs a system that allows people to enter the address at which
+they're registered to vote. He confirms that this information matches a
+registered voter via the **Voting Registration API**.  He then creates a
+tentative user account, which is not yet activated.  Behind the scenes,
+he then uses a simple postal API (like
+[Lob](https://lob.com/services/postcards/pricing) to send postcards to
+the registered address. The postcards include a code that can be used to
+activate the account.
+
 
 ## Requirements
 
