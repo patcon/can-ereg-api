@@ -2,10 +2,10 @@ swagger: '2.0'
 info:
   title: Canadian Voter Registration API
   description: >-
-    This is a speculative API server for checking Canadian voter registrations
-    via [Election Canada's online
-    tool](https://ereg.elections.ca/CWelcome.aspx). This exists solely for
-    documentation, and is not yet implemented.
+    This is a **work-in-progress** API server for checking Canadian voter
+    registrations via [Election Canada's online
+    tool](https://ereg.elections.ca/CWelcome.aspx). This API is unofficial and
+    in no way endorsed by Elections Canada.
   version: 1.0.0
 host: can-ereg-api.herokuapp.com
 schemes:
