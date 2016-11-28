@@ -86,7 +86,7 @@ paths:
       description: ''
       parameters:
         - name: check_id
-          description: ID of voter registration check
+          description: UUID of voter registration check
           in: path
           required: true
           type: string
