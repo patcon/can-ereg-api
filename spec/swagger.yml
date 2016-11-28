@@ -109,6 +109,7 @@ definitions:
       status:
         type: string
         description: 'Status of associated queued task.'
+        default: IN-PROGRESS
         enum:
           - IN-PROGRESS
           - SUCCESS
@@ -126,7 +127,7 @@ definitions:
         type: boolean
         description: 'Whether provided info corresponds to a registered voter.'
     example:
-      message:
+      message: 'You are registered to vote, at the address you provided.'
       registered: true
   Error:
     type: object
