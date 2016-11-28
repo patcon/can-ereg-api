@@ -79,12 +79,6 @@ paths:
             Location:
               description: URL of newly created Check resource.
               type: string
-          schema:
-            $ref: '#/definitions/Check'
-        default:
-          description: Generic Error
-          schema:
-            $ref: '#/definitions/Error'
   '/checks/{check_id}':
     get:
       operationId: app.get_check
@@ -102,21 +96,31 @@ paths:
       responses:
         '422':
           description: Sub-resource could not be found
+          $ref: '#/definitions/Error'
         '200':
           description: Sub-resource found
+          $ref: '#/definitions/Check'
 definitions:
   Check:
     type: object
     properties:
       status:
         type: string
-        description: ''
-      resolution:
+        description: 'Status of associated queued task.'
+        enum:
+          - IN-PROGRESS
+          - SUCCESS
+      result:
+        $ref: '#/definitions/CheckResult'
+  CheckResult:
+    type: object
+    properties:
+      message:
         type: string
-        description: ''
-      resource:
-        type: string
-        description: ''
+        description: 'Message output after final step of form.'
+      registered:
+        type: boolean
+        description: 'Whether provided info corresponds to a registered voter.'
   Error:
     type: object
     properties:
