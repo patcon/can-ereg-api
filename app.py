@@ -3,14 +3,29 @@ import logging
 
 from connexion import NoContent
 from flask import redirect
+from geopy import geocoders
 from os import environ
 from tasks import check_registration
 from tasks import DEFAULT_STATE
 
 
+def extract_geo_component(response, component):
+    name = [c['long_name'] for c in response.raw['address_components'] if component in c['types']]
+    return '' if not name else name[0]
+
 def create_check(**data):
     # TODO: Fix in spider so this isn't required.
     data.update({'unit_number': ''})
+
+    if data.get('full_address'):
+        g = geocoders.GoogleV3()
+        response = g.geocode(data['full_address'], components={'country':'CA'})
+        address_data = {
+                'postal_code': extract_geo_component(response, 'postal_code'),
+                'street_number': extract_geo_component(response, 'street_number'),
+                'unit_number': extract_geo_component(response, 'subpremise'),
+                }
+        data.update(address_data)
     task = check_registration.delay(data)
 
     return NoContent, 202, {'Location': 'https://can-ereg-api.herokuapp.com/v1/checks/{}'.format(task.id)}

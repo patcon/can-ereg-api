@@ -24,8 +24,9 @@ paths:
         - application/x-www-form-urlencoded
       summary: Initiate a new voter registration check
       description: |
-        The Voter Registration Check endpoint queues up a task,
-        and directs the user to that task object.
+        The Voter Registration Check endpoint queues up a task, and directs the
+        user to that task object. (Requires either a resolvable `full_address`
+        field, or if not, all other applicable address fields.)
       parameters:
         - name: first_name
           description: First name of voter
@@ -47,6 +48,10 @@ paths:
           format: date
           required: true
           pattern: "^[0-9]{4}-1?[0-9]-[1-3]?[0-9]$"
+          in: formData
+        - name: full_address
+          description: Address used to geocode full Canadian address
+          type: string
           in: formData
         - name: postal_code
           description: Home address postal code

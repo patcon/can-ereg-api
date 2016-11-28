@@ -2,6 +2,7 @@ captcha_solver
 celery<4
 connexion
 gunicorn
+geopy
 redis
 scrapy
 scrapyscript
