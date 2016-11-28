@@ -79,7 +79,7 @@ paths:
             Location:
               description: URL of newly created Check resource.
               type: string
-  '/checks/{check_id}':
+  /checks/{check_id}:
     get:
       operationId: app.get_check
       summary: Find voter registration check by ID
@@ -96,10 +96,12 @@ paths:
       responses:
         '422':
           description: Sub-resource could not be found
-          $ref: '#/definitions/Error'
+          schema:
+            $ref: '#/definitions/Error'
         '200':
           description: Sub-resource found
-          $ref: '#/definitions/Check'
+          schema:
+            $ref: '#/definitions/Check'
 definitions:
   Check:
     type: object
@@ -112,6 +114,8 @@ definitions:
           - SUCCESS
       result:
         $ref: '#/definitions/CheckResult'
+    example:
+      status: SUCCESS
   CheckResult:
     type: object
     properties:
@@ -121,6 +125,9 @@ definitions:
       registered:
         type: boolean
         description: 'Whether provided info corresponds to a registered voter.'
+    example:
+      message:
+      registered: true
   Error:
     type: object
     properties:
