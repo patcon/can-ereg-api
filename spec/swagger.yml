@@ -43,7 +43,7 @@ paths:
           type: string
           in: formData
         - name: birth_date
-          description: "Date of birth, eg. 1985-1-4"
+          description: "Date of birth, eg. 1985-1-27"
           type: string
           format: date
           required: true
