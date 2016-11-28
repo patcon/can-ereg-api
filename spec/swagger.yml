@@ -110,6 +110,7 @@ definitions:
         type: string
         description: 'Status of associated queued task.'
         default: IN-PROGRESS
+        required: true
         enum:
           - IN-PROGRESS
           - SUCCESS
@@ -126,9 +127,11 @@ definitions:
       message:
         type: string
         description: 'Message output after final step of form.'
+        required: true
       registered:
         type: boolean
         description: 'Whether provided info corresponds to a registered voter.'
+        required: true
   Error:
     type: object
     properties:
