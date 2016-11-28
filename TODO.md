@@ -1,4 +1,4 @@
 ### To Do
 
-- Add inheritance to API spec.
-  [[Ref]](https://stackoverflow.com/questions/27862407/swagger-inheritance-and-composition)
+- Consider removing geocoding, as perhaps that should be in the app, not
+  the API
