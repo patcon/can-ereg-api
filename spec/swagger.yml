@@ -82,7 +82,7 @@ paths:
   /checks/{check_id}:
     get:
       operationId: app.get_check
-      summary: Find voter registration check by ID
+      summary: Find voter registration check by UUID
       description: ''
       parameters:
         - name: check_id
