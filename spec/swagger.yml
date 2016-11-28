@@ -117,6 +117,9 @@ definitions:
         $ref: '#/definitions/CheckResult'
     example:
       status: SUCCESS
+      result:
+        message: 'You are registered to vote, at the address you provided.'
+        registered: true
   CheckResult:
     type: object
     properties:
@@ -126,9 +129,6 @@ definitions:
       registered:
         type: boolean
         description: 'Whether provided info corresponds to a registered voter.'
-    example:
-      message: 'You are registered to vote, at the address you provided.'
-      registered: true
   Error:
     type: object
     properties:
