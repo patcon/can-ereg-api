@@ -36,24 +36,6 @@ learn the result.
 
 ## Use-Cases
 
-#### Alternative Voting System
-
-Alice is building a [liquid
-democratic](https://medium.com/@DomSchiener/liquid-democracy-true-democracy-for-the-21st-century-7c66f5e53b6f)
-voting platform to help city councillors understand how citizens in
-their districts feel about certain issues. A councillor needs to have
-faith that that the information truthfully reflects the views of
-citizens they represent. Alice's platform has Facebook integration, but
-Alice has been told that councillors (rightfully) don't trust Facebook
-names and addresses to be correct.
-
-Thanksfully, Alice can use this **Voter Registration API** to improve
-the situation. She can now add a layer of verification on accounts,
-indicating when a Facebook account's address and name match a registered
-voter. Now the councillors can have higher confidence that the data is
-truly representative, and the citizen's views expressed via the platform
-can be more fully respected.
-
 #### Unofficial National Digital Identity System
 
 Bob wishes the Government of Canada offered a digital identity system,
@@ -73,6 +55,24 @@ he then uses a simple postal API (like
 [Lob](https://lob.com/services/postcards/pricing) to send postcards to
 the registered address. The postcards include a code that can be used to
 activate the account.
+
+#### Alternative Voting System
+
+Alice is building a [liquid
+democratic](https://medium.com/@DomSchiener/liquid-democracy-true-democracy-for-the-21st-century-7c66f5e53b6f)
+voting platform to help city councillors understand how citizens in
+their districts feel about certain issues. A councillor needs to have
+faith that that the information truthfully reflects the views of
+citizens they represent. Alice's platform has Facebook integration, but
+Alice has been told that councillors (rightfully) don't trust Facebook
+names and addresses to be correct.
+
+Thanksfully, Alice can use this **Voter Registration API** to improve
+the situation. She can now add a layer of verification on accounts,
+indicating when a Facebook account's address and name match a registered
+voter. Now the councillors can have higher confidence that the data is
+truly representative, and the citizen's views expressed via the platform
+can be more fully respected.
 
 
 ## Requirements
