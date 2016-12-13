@@ -54,8 +54,9 @@ registered voter via the **Voting Registration API**.  He then creates a
 tentative user account, which is not yet verified.  Behind the scenes,
 he then uses a simple postal API (like
 [Lob](https://lob.com/services/postcards/pricing) to send postcards to
-the registered address. The postcards include a code that can be used to
-activate the account on receipt in the mail.
+the registered address. The postcards include a code that, on receipt in
+the mail, can be used to verify the account. This in effect activates is
+and marks it as being tied to a verified citizen.
 
 Now Bob can build services for fellow citizens that have high assurance
 of accounts being owned by citizens. These services can, with the
