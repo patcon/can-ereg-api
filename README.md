@@ -67,7 +67,7 @@ with these services to the level of specificity that they are
 comfortable with.
 
 What's more, Bob can easily allow any other citizen-run project to
-leverage his identity system for login. These services with have access
+leverage his identity system for login. These services will have access
 to all the security promises and benefits of the OpenID Connect
 standard.
 
