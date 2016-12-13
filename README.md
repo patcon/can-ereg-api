@@ -44,17 +44,31 @@ start experimenting (as [Estonia has
 done](https://e-estonia.com/e-residents/about/)) sooner rather than
 later. He decides to bootstrap his own identity system, on which he can
 experiment with offering cryptographic identities and authorize
-third-party applications via OAuth, while ensuring each identity is
-paired to a genuine citizen with reasonably high assurances.
+third-party applications via OAuth or OpenID Connect, while ensuring
+each identity is paired to a genuine citizen with reasonably high
+assurances.
 
 Bob designs a system that allows people to enter the address at which
 they're registered to vote. He confirms that this information matches a
 registered voter via the **Voting Registration API**.  He then creates a
-tentative user account, which is not yet activated.  Behind the scenes,
+tentative user account, which is not yet verified.  Behind the scenes,
 he then uses a simple postal API (like
 [Lob](https://lob.com/services/postcards/pricing) to send postcards to
 the registered address. The postcards include a code that can be used to
-activate the account.
+activate the account on receipt in the mail.
+
+Now Bob can build services for fellow citizens that have high assurance
+of accounts being owned by citizens. These services can, with the
+permission of the user, also ask for access to granular information
+about the verified user location -- city ward, federal
+riding, neighborhood, or even exact address. Users can share information
+with these services to the level of specificity that they are
+comfortable with.
+
+What's more, Bob can easily allow any other citizen-run project to
+leverage his identity system for login. These services with have access
+to all the security promises and benefits of the OpenID Connect
+standard.
 
 #### Alternative Voting System
 
