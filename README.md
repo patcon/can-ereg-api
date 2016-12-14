@@ -18,6 +18,17 @@ Working API available at
   need to restrict access to the API, contingent on developer account creation.
 * [ ] **Accepts partial addresses.** We'll use the Google Maps geocoder to
   resolve them to full addresses for our lookup.
+* [ ] **Signed API responses.** We'll generate and send [JSON web
+  tokens](https://jwt.io/) in responses.\*
+
+
+\* <sup>This will allow client-side API requests (ie. requests from
+user's browser), that can then be forwarded to a third-party. The third
+party has assurance that this response data came from this API and has
+not been altered. The user's browser would be requesting a single voter
+registration check (for the user), and sending it to a third-party
+service. This will in theory minimize the chances that we'll be
+violating terms of service on the Elections Canada web tool.</sup>
 
 ## Architecture
 
