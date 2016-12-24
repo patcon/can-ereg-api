@@ -19,7 +19,8 @@ tags:
 paths:
   /checks:
     post:
-      operationId: app.create_check
+      x-swagger-router-controller: app
+      operationId: create_check
       consumes:
         - application/x-www-form-urlencoded
       summary: Initiate a new voter registration check
@@ -84,7 +85,8 @@ paths:
               type: string
   /checks/{check_id}:
     get:
-      operationId: app.get_check
+      x-swagger-router-controller: app
+      operationId: get_check
       summary: Find voter registration check by UUID
       description: ''
       parameters:
