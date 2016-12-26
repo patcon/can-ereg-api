@@ -13,7 +13,8 @@ from scrapyscript import Job, Processor
 from can_ereg.spiders.voter_registration import VoterRegistrationSpider
 
 
-DEFAULT_STATE = states.PENDING
+NONEXIST_STATE = states.PENDING
+RUNNING_STATE = "IN-PROGRESS"
 
 # See: https://stackoverflow.com/questions/9824172/find-out-whether-celery-task-exists
 @after_task_publish.connect
@@ -24,7 +25,7 @@ def update_sent_state(sender=None, body=None, **kwargs):
     task = current_app.tasks.get(sender)
     backend = task.backend if task else current_app.backend
 
-    backend.store_result(body['id'], None, "IN-PROGRESS")
+    backend.store_result(body['id'], None, RUNNING_STATE)
 
 redis_url = environ.get('REDIS_URL', 'redis://localhost:6379')
 app = Celery('tasks', backend='{}/1'.format(redis_url), broker='{}/0'.format(redis_url))

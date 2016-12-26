@@ -8,7 +8,7 @@ from flask import redirect
 from geopy import geocoders
 from os import environ
 from tasks import check_registration
-from tasks import DEFAULT_STATE
+from tasks import NONEXIST_STATE, RUNNING_STATE
 
 
 host = environ.get('HOST', 'https://can-ereg-api.herokuapp.com')
@@ -78,17 +78,20 @@ def normalize_address(full_address):
 def get_check(check_id):
     task = check_registration.AsyncResult(check_id)
 
-    if task.status == DEFAULT_STATE:
-        return NoContent, 422
-
-    result = task.result[0] if task.ready() else None
-
-    response = {
+    data = {
             'status': task.status,
-            'result': result,
+            'registered': None,
+            'raw_message': None,
             }
 
-    return response, 200
+    if task.status == NONEXIST_STATE:
+        return NoContent, 422
+    elif task.status == RUNNING_STATE:
+        return data, 200
+    elif task.ready():
+        data.update(task.result[0])
+        return data, 200
+
 
 logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__, specification_dir='spec/')

@@ -118,22 +118,16 @@ definitions:
         enum:
           - IN-PROGRESS
           - SUCCESS
-      result:
-        $ref: '#/definitions/CheckResult'
-    example:
-      status: SUCCESS
-      result:
-        message: 'You are registered to vote, at the address you provided.'
-        registered: true
-  CheckResult:
-    type: object
-    properties:
-      message:
+      raw_message:
         type: string
         description: 'Message output after final step of form.'
       registered:
         type: boolean
         description: 'Whether provided info corresponds to a registered voter.'
+    example:
+      status: SUCCESS
+      raw_message: 'You are registered to vote, at the address you provided.'
+      registered: true
   Error:
     type: object
     properties:

@@ -177,7 +177,7 @@ class VoterRegistrationSpider(scrapy.Spider):
         #  - You are registered to vote, at the address you provided.
         #  - Based on the information provided, we cannot confirm that you are registered to vote.
         is_registered = True if ('You are registered to vote' in text) else False
-        return {'message': text, 'registered': is_registered}
+        return {'raw_message': text, 'registered': is_registered}
 
     def render_url(self, response):
         open_in_browser(response)
