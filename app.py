@@ -1,4 +1,5 @@
 import connexion
+import flask
 import json
 import logging
 import re
@@ -10,13 +11,31 @@ from os import environ
 from tasks import check_registration
 from tasks import NONEXIST_STATE, RUNNING_STATE
 
+try:
+    from decorator import decorator
+except ImportError:
+    import sys
+    import logging
+    logging.error('Missing dependency. Please run `pip install decorator`')
+    sys.exit(1)
+
 
 host = environ.get('HOST', 'https://can-ereg-api.herokuapp.com')
+
+
+# See: https://github.com/zalando/connexion/blob/master/examples/basicauth/app.py
+@decorator
+def requires_auth(f: callable, *args, **kwargs):
+    api_key = flask.request.headers.get('Authorization')
+    if not api_key or not check_auth(api_key):
+        return authenticate()
+    return f(*args, **kwargs)
 
 def extract_geo_component(response, component):
     name = [c['long_name'] for c in response.raw['address_components'] if component in c['types']]
     return '' if not name else name[0]
 
+@requires_auth
 def create_check(**data):
     # TODO: Fix in spider so this isn't required.
     data.update({'unit_number': ''})
@@ -45,6 +64,16 @@ def create_check(**data):
         }
 
     return data, 202, headers
+
+def check_auth(api_key: str):
+    return api_key == environ['API_KEY']
+
+def authenticate():
+    '''Sends a 401 response that enableds header auth'''
+    headers = {
+            'WWW-Authenticate': 'Token realm="Application"',
+            }
+    return flask.Response('You must authenticate with a proper API key', 401, headers)
 
 def geocoder_response(full_address):
     full_address = normalize_address(full_address)
@@ -75,6 +104,7 @@ def normalize_address(full_address):
 
     return full_address
 
+@requires_auth
 def get_check(check_id):
     task = check_registration.AsyncResult(check_id)
 
@@ -88,10 +118,12 @@ def get_check(check_id):
         return NoContent, 422
     elif task.status == RUNNING_STATE:
         return data, 200
-    elif task.ready():
+    elif task.ready() and task.result:
         data.update(task.result[0])
         return data, 200
-
+    else:
+        # Shouldn't get here
+        return NoContent, 500
 
 logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__, specification_dir='spec/')

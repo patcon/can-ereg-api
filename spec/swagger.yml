@@ -16,6 +16,13 @@ produces:
 tags:
   - name: Checks
     description: Perform voter registration Checks
+securityDefinitions:
+  api_key:
+    type: apiKey
+    in: header
+    name: Authorization
+security:
+- api_key: []
 paths:
   /checks:
     post:
