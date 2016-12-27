@@ -6,6 +6,8 @@ info:
     registrations via [Election Canada's online
     tool](https://ereg.elections.ca/CWelcome.aspx). This API is unofficial and
     in no way endorsed by Elections Canada.
+
+    The demo API key to be used during testing is: `abcdef1234567890`
   version: 1.0.0
 host: can-ereg-api.herokuapp.com
 schemes:
