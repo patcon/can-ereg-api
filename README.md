@@ -14,9 +14,9 @@ Working API available at
   be interesting. This would require submitting driver's license number.
 * [ ] **Checks multiple addresses.** This will be helpful when you just want to
   submit your address history and find out where you're registered.
-* [ ] **Allows access via API key.** We bypass Election Canada's captcha, so we'll
+* [x] **Allows access via API key.** We bypass Election Canada's captcha, so we'll
   need to restrict access to the API, contingent on developer account creation.
-* [ ] **Accepts partial addresses.** We'll use the Google Maps geocoder to
+* [x] **Accepts partial addresses.** We'll use the Google Maps geocoder to
   resolve them to full addresses for our lookup.
 * [ ] **Signed API responses.** We'll generate and send [JSON web
   tokens](https://jwt.io/) in responses.\*
