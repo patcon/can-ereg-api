@@ -85,7 +85,7 @@ def get_check(check_id):
 
 
 def check_auth(api_key: str):
-    return api_key in environ['API_KEY'].split(',')
+    return api_key in environ['API_KEYS'].split(',')
 
 def authenticate():
     '''Sends a 401 response that enableds header auth'''
