@@ -31,9 +31,6 @@ def requires_auth(f: callable, *args, **kwargs):
         return authenticate()
     return f(*args, **kwargs)
 
-def extract_geo_component(response, component):
-    name = [c['long_name'] for c in response.raw['address_components'] if component in c['types']]
-    return '' if not name else name[0]
 
 @requires_auth
 def create_check(**data):
@@ -65,6 +62,28 @@ def create_check(**data):
 
     return data, 202, headers
 
+@requires_auth
+def get_check(check_id):
+    task = check_registration.AsyncResult(check_id)
+
+    data = {
+            'status': task.status,
+            'registered': None,
+            'raw_message': None,
+            }
+
+    if task.status == NONEXIST_STATE:
+        return NoContent, 422
+    elif task.status == RUNNING_STATE:
+        return data, 200
+    elif task.ready() and task.result:
+        data.update(task.result[0])
+        return data, 200
+    else:
+        # Shouldn't get here
+        return NoContent, 500
+
+
 def check_auth(api_key: str):
     return api_key == environ['API_KEY']
 
@@ -74,6 +93,10 @@ def authenticate():
             'WWW-Authenticate': 'Token realm="Application"',
             }
     return flask.Response('You must authenticate with a proper API key', 401, headers)
+
+def extract_geo_component(response, component):
+    name = [c['long_name'] for c in response.raw['address_components'] if component in c['types']]
+    return '' if not name else name[0]
 
 def geocoder_response(full_address):
     full_address = normalize_address(full_address)
@@ -103,27 +126,6 @@ def normalize_address(full_address):
         full_address = '{} #{}'.format(addr_rest, addr_unit)
 
     return full_address
-
-@requires_auth
-def get_check(check_id):
-    task = check_registration.AsyncResult(check_id)
-
-    data = {
-            'status': task.status,
-            'registered': None,
-            'raw_message': None,
-            }
-
-    if task.status == NONEXIST_STATE:
-        return NoContent, 422
-    elif task.status == RUNNING_STATE:
-        return data, 200
-    elif task.ready() and task.result:
-        data.update(task.result[0])
-        return data, 200
-    else:
-        # Shouldn't get here
-        return NoContent, 500
 
 logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__, specification_dir='spec/')
