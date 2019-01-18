@@ -82,6 +82,8 @@ leverage his identity system for login. These services will have access
 to all the security promises and benefits of the OpenID Connect
 standard.
 
+* Related: [id.c4nada.ca proof-of-concept](https://github.com/patcon/id.c4nada.ca) (based on `login.gov` codebase)
+
 #### Alternative Voting System
 
 Alice is building a [liquid
